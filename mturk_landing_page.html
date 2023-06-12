@@ -1,0 +1,229 @@
+<!-- For help on using this template, see the blog post: https://blog.mturk.com/editing-the-survey-link-project-template-in-the-ui-7c75285105fb#.py7towsdx --><!-- HIT template: SurveyLink-v3.0 --><!-- The following snippet enables the 'responsive' behavior on smaller screens -->
+<meta content="width=device-width,initial-scale=1" name="viewport" />
+<div id="loading">Loading HIT ...</div>
+
+<div id="no" style="display:none;width:100%;text-align:center;font-size:18px;padding-top:20px;">Thank you for your interest in our HIT. Right now this HIT can only be accepted and completed once. Please return this HIT and check back later. Thanks!</div>
+
+<div id="try_again" style="display:none;width:100%;text-align:center;font-size:18px;padding-top:20px;">Thank you for your interest in our HIT. You are ineligible to complete this particular assignment but we likely have others that you can do. Please return this HIT and try to accept a new one from us!</div>
+
+<div id="main" style="display:none;">
+<section class="container" id="SurveyLink"><!-- Instructions -->
+<div class="row">
+<div class="col-xs-12 col-md-12">
+<div class="panel panel-primary"><!-- WARNING: the ids "collapseTrigger" and "instructionBody" are being used to enable expand/collapse feature -->
+<h4 class="panel-heading" style="text-align: center;">We're researchers running an experiment to measure how quickly humans can recognize objects in images</h4>
+
+<div class="panel-body" id="instructionBody">
+
+<p>&nbsp;</p>
+
+<p>This HIT&nbsp;is designed to help us&nbsp;get precise measurements on how quickly humans can recognize objects in images. All you have to do for this task is look at an image that appears and disappears quickly and then tell us what object you saw in the center of the image. You will be shown 50 images. This HIT should take about 15&nbsp;min.</p>
+
+<p>1. Click start below and follow the instructions</p>
+
+<p>2. Enter the task completion code&nbsp;generated&nbsp;at the end of the task&nbsp;in the box below. If you have a problem with hit email us at mitmturk@mit.edu and type "email" in the completion code box.</p>
+
+<p>&nbsp;</p>
+
+<p>Give us your email <a href="https://docs.google.com/forms/d/e/1FAIpQLSeaz7YVe1ydD11gXehxKe8jJiK95StVXTaSb8n-eods6fJT5A/viewform?usp=sf_link" style="background-color: rgb(255, 255, 255);">here</a>&nbsp;if you want to find out about future tasks like this one.&nbsp;</p>
+</div>
+</div>
+</div>
+</div>
+<!-- End Instructions --><!-- Survey Link Layout -->
+
+<div class="row" id="workContent">
+<div class="col-xs-12 col-md-6 col-md-offset-3"><!-- Content for Worker -->
+<table class="table table-condensed table-bordered">
+	<colgroup>
+		<col class="col-xs-4 col-md-4" />
+		<col class="col-xs-8 col-md-8" />
+	</colgroup>
+	<tbody>
+		<tr>
+			<td>
+			<p>&nbsp;</p>
+
+			<p><label>HIT Link:</label></p>
+			</td>
+			<td>
+			<h3><a href="" id="start" target="_blank">Start</a></h3>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- End Content for Worker --><!-- Input from Worker -->
+
+<div class="form-group"><label for="surveycode">Provide the 4 digit task completion&nbsp;code here:</label> <input class="form-control" id="surveycode" name="surveycode" placeholder="e.g. 1234" required="" type="text" /> <input class="form-control" id="valid" name="valid" placeholder="" style="display:none;" type="text" /></div>
+<!-- End input from Worker --></div>
+</div>
+<!-- End Survey Link Layout --></section>
+</div>
+<!-- Please note that Bootstrap CSS/JS and JQuery are 3rd party libraries that may update their url/code at any time. Amazon Mechanical Turk (MTurk) is including these libraries as a default option for you, but is not responsible for any changes to the external libraries --><!-- External CSS references -->
+<link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" integrity="sha384-IS73LIqjtYesmURkDE9MXKbXqYA8rvKEp/ghicjem7Vc3mGRdQRptJSz60tvrB6+" rel="stylesheet" /><!-- Open internal style sheet -->
+<style type="text/css">#collapseTrigger{
+  color:#fff;
+  display: block;
+  text-decoration: none;
+}
+#submitButton{
+  white-space: normal;
+}
+#surveycode-error{
+  color: red;
+}
+.image{
+  margin-bottom: 15px; 
+}
+/* CSS for breaking long words/urls */
+.dont-break-out {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+</style>
+<!-- Close internal style sheet --><!-- External JS references --><script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js" integrity="sha384-s1ITto93iSMDxlp/79qhWHi+LsIi9Gx6yL+cOKDuymvihkfol83TYbLbOw+W/wv4" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script><!-- Open internal javascript --><script>
+
+ var fullurl = window.location.href;
+ function turkGetParam( name ) { 
+     var regexS = "[\?&]"+name+"=([^&#]*)"; 
+     var regex = new RegExp( regexS ); 
+     var tmpURL = fullurl; 
+     var results = regex.exec( tmpURL ); 
+     if( results == null ) { 
+         return ""; 
+     } else { 
+         return results[1];    
+     } 
+ }
+
+var assign = turkGetParam('assignmentId');
+var hit = turkGetParam('hitId');
+var worker = turkGetParam('workerId');
+var linkID = "${HIT_Link}".slice(-8);
+var server = "${HIT_Link}".slice(0,-30);
+
+console.log("SERVER", server); 
+console.log("LINK", linkID);
+
+function startHIT(){
+  jQuery.validator.addMethod("isCorrect", function(value, element) {
+      if(value=="email"){
+        $("#valid").val("1843");
+        return true;
+      }
+       
+  var val=md5(assign).substr(0, 4);
+  //console.log(val);
+      return (value == val);
+  }, "Incorrect task completion code. Please enter the code displayed at the end of the task.");
+
+    $(document).ready(function() {
+  $('#mturk_form').validate({
+      onfocusout: false,
+      onkeyup: false,
+      onclick: false,
+      rules : {
+          surveycode: {required:true, minlength: 4,isCorrect: true}
+      }
+  });
+
+     $('#mturk_form').submit(function(){
+              if(!$("#mturk_form").valid()){
+                  e.preventDefault();
+                  alert("invalid");
+              }
+              else{
+                  $("#valid").val("1842");
+              }
+  });
+           var link = document.getElementById("start");
+           if(assign == "ASSIGNMENT_ID_NOT_AVAILABLE" || assign == "" || !assign) {
+               link.innerHTML = "Link will appear here when HIT is accepted";
+               link.setAttribute('href', "");
+           } else {
+               link.innerHTML = "Click to start";
+               link.setAttribute('href',new String("${HIT_Link}" + "&b=" + assign + "&c=" + hit + "&d=" + worker));
+           }
+
+  /*
+      // Instructions expand/collapse
+      var content = $('#instructionBody');
+      var trigger = $('#collapseTrigger');
+      content.hide();
+      $('.collapse-text').text('(Click to expand)');
+      trigger.click(function(){
+        content.toggle();
+        var isVisible = content.is(':visible');
+        if(isVisible){
+          $('.collapse-text').text('(Click to collapse)');
+        }else{
+          $('.collapse-text').text('(Click to expand)');
+        }
+      });
+      // end expand/collapse
+  */
+    });
+}
+  //startHIT();
+
+  //preview HIT
+
+
+console.log('Here');
+if(assign == "ASSIGNMENT_ID_NOT_AVAILABLE" || assign == "" || !assign){
+  $("#loading").hide()
+  $("#main").show();
+  $("#submitButton").show();
+  startHIT();
+}
+//accept HIT
+else{
+  console.log('hiding button');
+  $("#mturk_form").hide();
+  var hitStarted=false;
+  setTimeout(function(){ if(!hitStarted){$("#mturk_form").show();$("#submitButton").hide();} }, 500);
+  setTimeout(function(){ if(!hitStarted){$("#mturk_form").show();$("#submitButton").hide();} }, 1000);
+  setTimeout(function(){ if(!hitStarted){$("#mturk_form").show();$("#submitButton").hide();} }, 2000);
+  setTimeout(function(){ if(!hitStarted){$("#mturk_form").show();$("#submitButton").hide();} }, 4000);
+  setTimeout(function(){ if(!hitStarted){$("#mturk_form").show();$("#submitButton").hide();} }, 10000);
+
+
+console.log('sending request');
+  $.ajax({
+    url: server + "/check_worker?callback=?",
+    dataType: "jsonp",
+    data: "workerID="+worker+"&&assignmentID="+assign+"&&linkID="+linkID,
+    jsonp: "callback",
+    success: function (data) {
+      console.log('data', data);
+      if(data.worker==true){
+        hitStarted=true;
+        $("#loading").hide()
+        $("#main").show();
+        $("#mturk_form").show();
+        $("#submitButton").show();
+        startHIT();
+      }
+      else{
+        $("#loading").hide()
+        if(data.link==false){
+            $("#no").show();
+        } else {
+            $("#try_again").show();
+        }
+      }
+    },
+    error: function (xhr, status, error) {
+      console.log('Error: ' + error.message);
+    }
+  });
+}
+
+</script><!-- Close internal javascript -->
