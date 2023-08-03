@@ -12,11 +12,9 @@ def phaseScrambleImage(inputImage):
 
     outPhase = np.angle(fft2(np.random.randn(*inputImage.shape)))
 
-    # scrambledImage = ifft2(inAmp * np.exp(1j * outPhase))
-    scrambledImage = np.abs(np.real(ifft2(np.multiply(inAmp, np.exp(1j * outPhase)))))
-
-    return scrambledImage
-
+    scrambledImage = np.real(ifft2(inAmp * np.exp(1j * outPhase)))
+    rescaled_scrambledImage = (scrambledImage - scrambledImage.min()) / (scrambledImage.max() - scrambledImage.min())
+    return rescaled_scrambledImage
 
 def make_phase_masks(image_folder):
     outfold = f"{image_folder}_phase_scramble"
@@ -29,7 +27,7 @@ def make_phase_masks(image_folder):
     
         for j in range(len(imgs)):
             imname = imgs[j]
-            im = np.array(Image.open(os.path.join(image_folder, catname, imname))) / 255
+            im = np.array(Image.open(os.path.join(image_folder, catname, imname)).convert('RGB')) / 255
 
             if im.shape[2] == 3:
                 imR = im[:,:,0]
