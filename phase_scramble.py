@@ -17,7 +17,8 @@ def phaseScrambleImage(inputImage):
     return rescaled_scrambledImage
 
 def make_phase_masks(image_folder):
-    outfold = f"{image_folder}_phase_scramble"
+    folder_name = image_folder.strip('/').split('/')[-1]
+    outfold = f"{folder_name}_phase_scramble"
     cats = os.listdir(image_folder)
 
     for i in range(len(cats)):

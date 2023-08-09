@@ -185,10 +185,8 @@ def make_and_save_videos(experiment_name, stimuli_dir, frame_counts):
 
     # where the experiment stimuli images and corresponding masks are for embedding in video
     make_phase_masks(stimuli_dir)
-    if stimuli_dir.endswith('/'):
-        phase_mask_dir = stimuli_dir[:-1] + '_phase_scramble'
-    else:
-        phase_mask_dir = stimuli_dir + '_phase_scramble'
+    image_folder_name = stimuli_dir.strip('/').split('/')[-1]
+    phase_mask_dir = os.path.join(owd, image_folder_name + '_phase_scramble')
 
 
     os.chdir(owd)
