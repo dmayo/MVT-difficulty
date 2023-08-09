@@ -96,6 +96,7 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
         dur = v['image_duration']
         images_to_videos[img][dur] = v['video']
 
+    print('Building experiment sets and links...')
     image_sets = get_image_sets(classes_to_images, num_images_per_task, num_image_sets)
     video_orders = get_video_orders(image_sets, images_to_videos, image_durations, num_participants)
 

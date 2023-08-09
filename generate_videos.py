@@ -184,6 +184,7 @@ def make_and_save_videos(experiment_name, stimuli_dir, frame_counts):
     
 
     # where the experiment stimuli images and corresponding masks are for embedding in video
+    print('Making phase masks...')
     make_phase_masks(stimuli_dir)
     image_folder_name = stimuli_dir.strip('/').split('/')[-1]
     phase_mask_dir = os.path.join(owd, image_folder_name + '_phase_scramble')
@@ -213,6 +214,7 @@ def make_and_save_videos(experiment_name, stimuli_dir, frame_counts):
 
     duration_samples = get_duration_samples(frame_counts)
 
+    print('Generating experiment videos...')
     video_data = generate_videos(duration_samples, white_mask_loc, cross_image_loc, images_to_class, response_options, phase_mask_dir, stimuli_dir, experiment_dir)
 
     
