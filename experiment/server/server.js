@@ -20,8 +20,9 @@ let REDIS_DB = parseInt(process.env.REDIS_DB);
 let EXPERIMENT_PORT = parseInt(process.env.EXPERIMENT_PORT);
 let SERVER_PRIVATE_KEY_FILE = process.env.SERVER_PRIVATE_KEY_FILE;
 let SERVER_CERTIFICATE_FILE = process.env.SERVER_CERTIFICATE_FILE;
-let NUM_IMAGES_PER_TASK = process.env.NUM_IMAGES_PER_TASK;
-let NUM_VIDEO_LISTS_PER_LINK = process.env.NUM_VIDEO_LISTS_PER_LINK;
+let NUM_VIDEO_LISTS_PER_LINK = fs.readdirSync('../public/experiment_data/video_orders/order_0').length;
+const video_list = require('../public/experiment_data/video_orders/order_0/0.json')
+let NUM_IMAGES_PER_TASK = video_list.length;
 
 let redisOptions = {
     host: REDIS_HOST,
