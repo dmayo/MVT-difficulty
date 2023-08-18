@@ -67,7 +67,6 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
     REDIS_PORT = environment.get("REDIS_PORT")
     REDIS_DB = environment.get("REDIS_DB")
     REDIS_PASSWORD = environment.get("REDIS_PASSWORD")
-    
 
 
     cwd = os.getcwd()
@@ -113,12 +112,13 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
     
     base_link = f"https://{EXPERIMENT_HOST}:{EXPERIMENT_PORT}/experiment.html?link="
     links = []
+    print(num_images, num_image_sets, len(link_ids))
     for link_id in link_ids:
         links.append([base_link+str(link_id)])
 
     with open(experiment_name+"_links.csv", "w") as f:
         writer = csv.writer(f)
-        writer.writerow('HIT_Link')
+        writer.writerow(['HIT_Link'])
         writer.writerows(links)
 
     # log link_ids with relevant metadata (data json, video lists, etc) in redis
