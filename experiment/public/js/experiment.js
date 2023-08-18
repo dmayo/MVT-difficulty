@@ -70,7 +70,7 @@ function buildClassesTable(){
 	buttonString += '<tr>';
 	for(let j=0;j<num_cols;j++){
 	    if ((i*num_cols + j) < numClasses){
-		buttonString += '<td>'+response_options[i*num_cols+j]+'</td>';
+		buttonString += '<td>'+response_options[i*num_cols+j].replace("_", " ")+'</td>';
 	    }
 	}
 	buttonString += '</tr>';
@@ -107,19 +107,24 @@ function startResponse(){
     $("#submit_response").prop("disabled",true);
     $("#response_buttons").html("");
     let buttonString = "";
+
+
     
     if (mode == "multiple choice") {  
-	buttonString += '<div class="row justify-content-md-center" style="font-size:28px;width:600px;text-align:center;margin: 0 auto;padding-top:30px;">';
+	buttonString += '<div class="row justify-content-md-center" style="font-size:28px;width:1000px;text-align:center;margin: 0 auto;padding-top:30px;">';
 	response_options = videos[currentExperiment-1]["response_options"]
 	buttonString += '<table border="1" cellpadding="15px" style="font-size:18px;line-height:22px;">';
 
-	num_cols = 8
+	response_options.sort(() => Math.random() - 0.5);
+
+
+	num_cols = 7
 	num_rows = Math.ceil(numClasses / num_cols )
 	for(let i=0;i<num_rows;i++){
 	    buttonString += '<tr>';
 	    for(let j=0;j<num_cols;j++){
 		if ((i*num_cols + j) < numClasses){
-		    buttonString += '<td height="75px" width="140px" style="cursor:pointer;" onclick=\'$("#response_box").val("'+response_options[i*num_cols+j]+'");$("#submit_response").prop("disabled",false);$("#submit_response").focus();\'>'+response_options[i*num_cols+j]+'</td>';
+		    buttonString += '<td height="75px" width="140px" style="cursor:pointer;" onclick=\'$("#response_box").val("'+response_options[i*num_cols+j].replace("_", " ")+'");$("#submit_response").prop("disabled",false);$("#submit_response").focus();\'>'+response_options[i*num_cols+j].replace("_", " ")+'</td>';
 		}
 	    }
 	    buttonString += '</tr>';

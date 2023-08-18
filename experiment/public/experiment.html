@@ -213,9 +213,9 @@
           <button class="btn btn-primary" id="vision_next" onclick="nextState();" style="display:none;">Next</button>
       </div>
       <div id="experiment" style="display:none;text-align:left;margin:auto;width:100%;">
-        <div id="viewer_container" style="margin: auto;">
+        <div id="viewer_container" style="margin: auto; text-align:center">
 <!--          <div id="viewer_back" style="background-color:#001ec3;">-->
-              <div id="viewer_instructions"></div>
+              <div id="viewer_instructions" style="text-align:center"></div>
 	      <div>
             <video id="viewer" onended="setTimeout(nextViewerState(), 7000)" style="display:none;">
               <source type="video/mp4" />
@@ -296,16 +296,16 @@
       }
 
 
-      let imagenet_labels = {};
-      $.ajax({
-        dataType: "json",
-        type: 'get',
-        url: "allowed_imagenet_simple_labels.json",
-        async: false,
-        success: function(data) {
-          imagenet_labels = data;
-        }
-      });
+      <!-- let imagenet_labels = {}; -->
+      <!-- $.ajax({ -->
+      <!--   dataType: "json", -->
+      <!--   type: 'get', -->
+      <!--   url: "allowed_imagenet_simple_labels.json", -->
+      <!--   async: false, -->
+      <!--   success: function(data) { -->
+      <!--     imagenet_labels = data; -->
+      <!--   } -->
+      <!-- }); -->
       let data_files = {};
       let resume_from = 0;
       $.ajax({

@@ -1,5 +1,5 @@
 let mode =  "multiple choice"
-let numClasses = 50 // TODO
+
 function startExperiment(){
     let mm2in = 0.0393701;
     px2mm = data["px2mm"];
@@ -59,26 +59,24 @@ function startExperimentVideo(){
 }
 
 function buildClassesTable(){
+    let numClasses = classes.length
     $("#classes_table").html("");
     let buttonString = "";
-    buttonString += '<div class="row justify-content-md-center" style="font-size:28px;width:600px;text-align:center;margin: 0 auto;padding-top:30px;">';
-    response_options = videos[currentExperiment-1]["response_options"]
-    buttonString += '<table border="1" cellpadding="15px" style="font-size:18px;line-height:22px;">';
-
-    num_cols = 8
-    num_rows = Math.ceil(numClasses / num_cols )
+    response_options = videos[0]["response_options"]
+    buttonString += '<table style="width:400px">';
+    num_cols = 3
+    num_rows = Math.ceil(numClasses / num_cols );
     for(let i=0;i<num_rows;i++){
 	buttonString += '<tr>';
 	for(let j=0;j<num_cols;j++){
 	    if ((i*num_cols + j) < numClasses){
-		buttonString += '<td height="75px" width="140px" style="cursor:pointer;" onclick=\'$("#response_box").val("'+response_options[i*num_cols+j]+'");$("#submit_response").prop("disabled",false);$("#submit_response").focus();\'>'+response_options[i*num_cols+j]+'</td>';
+		buttonString += '<td>'+response_options[i*num_cols+j]+'</td>';
 	    }
 	}
 	buttonString += '</tr>';
+
     }
     buttonString += '</table>';
-    buttonString += '<div style="margin-top:20px;">I saw a <input type="text" id="response_box" READONLY/></div>';
-    buttonString += '</div>';
     $("#classes_table").append(buttonString);
 }
 
@@ -105,8 +103,9 @@ function startExampleVideo(){
 }
 
 function startResponse(){
-  $("#submit_response").prop("disabled",true);
-  $("#response_buttons").html("");
+    let numClasses = classes.length
+    $("#submit_response").prop("disabled",true);
+    $("#response_buttons").html("");
     let buttonString = "";
     
     if (mode == "multiple choice") {  
