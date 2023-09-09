@@ -11,15 +11,37 @@ def get_image_sets(classes_to_images, num_images_per_task, num_image_sets):
     image_sets = []
     classes = list(classes_to_images.keys())
     num_classes = len(classes)
+    
+    def finished(classes_to_images):
+        for imgs in classes_to_images.values():
+            if len(imgs):
+                return False
+        return True
+    
     for _ in range(num_image_sets):
         image_set = []
-        for i in range(num_images_per_task):
+        i = 0
+        img_count = 0
+        while img_count < num_images_per_task:
+            if finished(classes_to_images):
+                break
             label = classes[i % num_classes]
+            i += 1
             if not classes_to_images[label]:
                 continue
             random.shuffle(classes_to_images[label])
             image_set.append(classes_to_images[label].pop())
+            img_count += 1
         image_sets.append(image_set)
+
+    if len(image_sets[-1]) < 25:
+        random.shuffle(image_sets[-1])
+        for i, img in enumerate(image_sets[-1]):
+            image_sets[i].append(img)
+        image_sets.pop(-1)
+
+    print([len(s) for s in image_sets])
+        
     return image_sets
 
 def get_video_orders(image_sets, images_to_videos, image_durations, num_participants):
