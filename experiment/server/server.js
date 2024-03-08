@@ -21,8 +21,6 @@ let EXPERIMENT_PORT = parseInt(process.env.EXPERIMENT_PORT);
 let SERVER_PRIVATE_KEY_FILE = process.env.SERVER_PRIVATE_KEY_FILE;
 let SERVER_CERTIFICATE_FILE = process.env.SERVER_CERTIFICATE_FILE;
 let NUM_VIDEO_LISTS_PER_LINK = fs.readdirSync('../public/experiment_data/video_orders/order_0').length;
-const video_list = require('../public/experiment_data/video_orders/order_0/0.json')
-let NUM_IMAGES_PER_TASK = video_list.length;
 
 let redisOptions = {
     host: REDIS_HOST,
@@ -205,6 +203,11 @@ app.post('/get_order_num', async function (req, res) {
 		let trial_num = timestamp_data["trial_num"]
 		let current_time = new Date().getTime();
 		let elapsed_time = current_time - start_time
+
+		let link_order_dir = await redisClient.hgetallAsync(link)['order']
+		const video_list = require('../public/experiment_data/video_orders/' + link_order_dir + '/' + i + '.json')
+		let NUM_IMAGES_PER_TASK = video_list.length;
+
 		if (trial_num < NUM_IMAGES_PER_TASK - 1 && elapsed_time  > allotted_time){
 		    bad_assignment = true;
 		}

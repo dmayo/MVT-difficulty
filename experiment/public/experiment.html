@@ -296,16 +296,6 @@
       }
 
 
-      <!-- let imagenet_labels = {}; -->
-      <!-- $.ajax({ -->
-      <!--   dataType: "json", -->
-      <!--   type: 'get', -->
-      <!--   url: "allowed_imagenet_simple_labels.json", -->
-      <!--   async: false, -->
-      <!--   success: function(data) { -->
-      <!--     imagenet_labels = data; -->
-      <!--   } -->
-      <!-- }); -->
       let data_files = {};
       let resume_from = 0;
       $.ajax({
@@ -389,7 +379,7 @@
       }
       
 
-
+      let task_length = videos.length
       console.log('video list', videos);
       let viewerInstructionsState = 0;
       let viewerInstructions = ["images/steps5_no_phone_block.png", "images/steps2_no_phone_block.png"];
@@ -495,6 +485,7 @@
                  //"response": $("input[name='response']:checked").val(),
                  //"response_position": $("input[name='response']:checked").attr('id').substring(1),
                  "response": $("#response_box").val(),
+		 "task_length": task_length,
                  "response_time": (response_end_time-response_start_time),
                  "total_elapsed_time": (response_end_time-experiment_start_time),
                  "video_height": videoHeight,

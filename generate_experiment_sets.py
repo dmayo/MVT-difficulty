@@ -39,8 +39,6 @@ def get_image_sets(classes_to_images, num_images_per_task, num_image_sets):
         for i, img in enumerate(image_sets[-1]):
             image_sets[i].append(img)
         image_sets.pop(-1)
-
-    print([len(s) for s in image_sets])
         
     return image_sets
 
