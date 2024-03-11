@@ -13,6 +13,7 @@ if __name__ == "__main__":
     parser.add_argument('--frame_counts', help='List of frame counts for image presentation times. 1 frame is 1/60s', nargs='*', type=int, default=[1, 3, 6, 9, 15, 600])
     parser.add_argument('--num_images_per_task', help='The number of images to show in each MTurk task', type=int, default=50)
     parser.add_argument('--num_workers', help='The number of workers who will see an image at each duration', type=int, default=7)
+    parser.add_argument('--num_attention_checks', help='The number of 10s attention checks to add to the task (not included in num_images_per_task)', type=int, default=0)
 
     owd = os.getcwd()
     args = parser.parse_args()
@@ -26,17 +27,19 @@ if __name__ == "__main__":
             "REDIS_DB",
             "REDIS_PASSWORD"
     ]:
-        assert var in environment ; f"Environment variable {var} is not set"
+        assert var in environment, f"Environment variable {var} is not set"
 
+
+    include_attention_checks = args.num_attention_checks > 0
     # make videos from each image with each duration
-    make_and_save_videos(args.experiment_name, args.image_directory, args.frame_counts)
+    make_and_save_videos(args.experiment_name, args.image_directory, args.frame_counts, include_attention_checks)
 
     os.chdir(owd)
 
     os.system(f'export NUM_IMAGES_PER_TASK={args.num_images_per_task}')
     os.system(f'export NUM_VIDEO_LISTS_PER_LINK={args.num_workers * len(args.frame_counts)}')
     # make experiment sets and links from videos
-    make_video_lists_and_link_csv(args.experiment_name, args.image_directory, args.num_images_per_task, args.num_workers)
+    make_video_lists_and_link_csv(args.experiment_name, args.image_directory, args.num_images_per_task, args.num_workers, args.frame_counts, args.num_attention_checks)
     
     
     if os.path.exists('./experiment/public/experiment_data'):

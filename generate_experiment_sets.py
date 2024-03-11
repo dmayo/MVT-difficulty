@@ -34,23 +34,29 @@ def get_image_sets(classes_to_images, num_images_per_task, num_image_sets):
             img_count += 1
         image_sets.append(image_set)
 
-    if len(image_sets[-1]) < 25:
+    # if the final task is small, just distribute across the other tasks
+    if len(image_sets[-1]) < (num_images_per_task / 2):
         random.shuffle(image_sets[-1])
         for i, img in enumerate(image_sets[-1]):
-            image_sets[i].append(img)
+            image_sets[i % (len(image_sets) - 1)].append(img)
         image_sets.pop(-1)
         
     return image_sets
 
-def get_video_orders(image_sets, images_to_videos, image_durations, num_participants):
+def get_video_orders(image_sets, images_to_videos, image_durations, num_participants, num_attention_checks):
+    all_images = list(images_to_videos.keys())
     video_sets = []
     for image_set in image_sets:
+        excluded_images = [img for img in all_images if img not in image_set]
         video_set = []
         for dur_idx in range(len(image_durations)):
             video_list = []
             for i, img in enumerate(image_set):
                 dur = image_durations[(i  + dur_idx) % len(image_durations)]
                 video_list.append(images_to_videos[img][dur])
+            for i in range(num_attention_checks):
+                sample_img = random.sample(excluded_images, 1)
+                video_list.append(images_to_videos[img][600]) # add 10s attention check
             video_set.append(video_list)
         video_sets.append(video_set)
 
@@ -78,9 +84,9 @@ def make_link_ids(link_id_length, video_orders, video_data_filename, experiment_
 
 
     
-def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_task, num_participants):
+def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_task, num_participants, frame_counts, num_attention_checks):
     environment = os.environ
-    # todo check if its in the environment first to avoid bugs
+
     EXPERIMENT_HOST = environment.get("EXPERIMENT_HOST")
     EXPERIMENT_PORT = environment.get("EXPERIMENT_PORT")
     REDIS_HOST = environment.get("REDIS_HOST")
@@ -101,7 +107,8 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
     num_images = len(images)
 
 
-    image_durations = list(set([v['image_duration'] for v in video_data]))
+    # image_durations = list(set([v['image_duration'] for v in video_data]))
+    image_durations = frame_counts
     classes = list(set([v['label'] for v in video_data]))
     
     num_classes = len(classes)
@@ -117,7 +124,7 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
 
     print('Building experiment sets and links...')
     image_sets = get_image_sets(classes_to_images, num_images_per_task, num_image_sets)
-    video_orders = get_video_orders(image_sets, images_to_videos, image_durations, num_participants)
+    video_orders = get_video_orders(image_sets, images_to_videos, image_durations, num_participants, num_attention_checks)
 
     for i, video_lists in enumerate(video_orders):
         order_dir = os.path.join(experiment_dir, 'video_orders', f'order_{i}')
@@ -132,7 +139,6 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
     
     base_link = f"https://{EXPERIMENT_HOST}:{EXPERIMENT_PORT}/experiment.html?link="
     links = []
-    print(num_images, num_image_sets, len(link_ids))
     for link_id in link_ids:
         links.append([base_link+str(link_id)])
 

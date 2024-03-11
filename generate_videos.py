@@ -140,9 +140,12 @@ def frames_to_videos(args):
     return video_data
 
 
-def get_duration_samples(frame_counts):
+def get_duration_samples(frame_counts, include_attention_checks):
     # 60 frames (1 s)
     flash_duration = lambda num_frames: num_frames
+    if include_attention_checks:
+        if 600 not in frame_counts: # add 10s duration if not already present
+            frame_counts = frame_counts + [600]
     duration_samples = [(flash_duration(90), flash_duration(f), flash_duration(30), flash_duration(30)) for f in frame_counts]
     return duration_samples
 
@@ -174,7 +177,7 @@ def generate_videos(duration_samples, white_mask_loc, cross_image_loc, image_to_
     return video_data
 
 
-def make_and_save_videos(experiment_name, stimuli_dir, frame_counts):
+def make_and_save_videos(experiment_name, stimuli_dir, frame_counts, include_attention_checks):
     # set up experiment directory 
     owd = os.getcwd()
     experiment_dir = os.path.join(owd, f'{experiment_name}_data')
@@ -212,7 +215,7 @@ def make_and_save_videos(experiment_name, stimuli_dir, frame_counts):
     images_to_class = class_info['images_to_class']
     response_options = class_info['response_options']
 
-    duration_samples = get_duration_samples(frame_counts)
+    duration_samples = get_duration_samples(frame_counts, include_attention_checks)
 
     print('Generating experiment videos...')
     video_data = generate_videos(duration_samples, white_mask_loc, cross_image_loc, images_to_class, response_options, phase_mask_dir, stimuli_dir, experiment_dir)
