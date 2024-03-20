@@ -63,7 +63,7 @@ def crop_img(img):
     return new_img
 
 def frames_to_videos(args):
-    cross_image, experiment_images, mask_info, white_mask, duration_samples, image_to_label, response_options, experiment_dir = args[:8]
+    cross_image, experiment_images, mask_info, white_mask, duration_samples, image_to_label, all_labels, experiment_dir = args[:8]
     mask_image = mask_info[0]
     mask_type = mask_info[1]
     cross_img = cv2.imread(cross_image)
@@ -121,7 +121,16 @@ def frames_to_videos(args):
     
         # Closes all the frames 
         cv2.destroyAllWindows() 
-        
+
+
+        random.shuffle(all_labels)
+        response_options = [correct_label]
+        max_class_count = 50
+        idx = 0
+        while len(response_options) < max_class_count:
+            cls = all_labels[idx]
+            if cls not in response_options:
+                response_options.append(cls)
         
         video_data.append({"video":file_name+".mp4",
                            "image":experiment_image.split('/')[-1],
@@ -220,10 +229,11 @@ def make_and_save_videos(experiment_name, stimuli_dir, frame_counts, include_att
     print('Generating experiment videos...')
     video_data = generate_videos(duration_samples, white_mask_loc, cross_image_loc, images_to_class, response_options, phase_mask_dir, stimuli_dir, experiment_dir)
 
+
     
     # dump video data into experiment directory for use in experiments
     with open(f'video_data_{experiment_name}.json', 'w') as f:
-        json.dump(video_data,f)
+        json.dump({'classes': response_options, 'videos': video_data},f)
 
 if __name__ == "__main__":
     # TODO argument parser
