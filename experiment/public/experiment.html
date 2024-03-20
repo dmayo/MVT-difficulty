@@ -314,17 +314,19 @@
         alert('This experiment will resume from image number '+resume_from+' after you complete the screen size and distance setps.')
       }
       console.log("Data files", data_files);
-      let videos = {};
+      let videos = [];
+      let video_data = {};
       $.ajax({
         dataType: "json",
         url: "experiment_data/"+data_files["video_data"],
         async: false,
         success: function(data) {
-          videos = data;
+          video_data = data;
         }
 		 });
 
-      let classes = videos[0]["response_options"];
+      videos = video_data["videos"]
+      let classes = video_data["classes"];
       console.log(classes);
 		 
 

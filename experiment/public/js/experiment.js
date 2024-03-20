@@ -62,8 +62,7 @@ function buildClassesTable(){
     let numClasses = classes.length
     $("#classes_table").html("");
     let buttonString = "";
-    console.log('vids', videos);
-    response_options = videos[0]["response_options"]
+    response_options = video_data["classes"]
     buttonString += '<table style="width:400px">';
     num_cols = 3
     num_rows = Math.ceil(numClasses / num_cols );
@@ -113,21 +112,9 @@ function startResponse(){
     
     if (mode == "multiple choice") {  
 	buttonString += '<div class="row justify-content-md-center" style="font-size:28px;width:1000px;text-align:center;margin: 0 auto;padding-top:30px;">';
-	let all_labels = videos[currentExperiment-1]["response_options"]
+	let response_options = videos[currentExperiment-1]["response_options"]
 	let label = videos[currentExperiment-1]["label"]
 	buttonString += '<table border="1" cellpadding="15px" style="font-size:18px;line-height:22px;">';
-
-	all_labels.sort(() => Math.random() - 0.5);
-	let response_options = [label];
-	idx = 0;
-	let maxOptions = 50;
-	while (response_options.length < Math.min(numClasses, maxOptions)) {
-	    next_label = all_labels[idx];
-	    if (next_label != label) {
-		response_options.push(next_label);
-	    }
-	    idx++;
-	}
 	response_options.sort(() => Math.random() - 0.5);
 
 	num_cols = 7
