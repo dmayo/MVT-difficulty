@@ -100,7 +100,7 @@ def make_video_lists_and_link_csv(experiment_name, image_dir, num_images_per_tas
     video_dir = os.path.join(experiment_dir, 'videos')
     video_data_filename = os.path.join(experiment_dir, f'video_data_{experiment_name}.json')
     with open(video_data_filename, 'r') as f:
-        video_data = json.load(f)
+        video_data = json.load(f)['videos']
     video_data_filename = video_data_filename.split('/')[-1]
 
     images = [img.split('/')[-1] for img in glob.glob(os.path.join(image_dir, '*/*'))]
