@@ -53,7 +53,7 @@ app.post('/submit_response', function (req, res) {
     /*
       Records a workers response along with some additional information.
     */
-    let data = {"link_id": req.body.link,
+    let data = {"link_id": req.body.link_id,
                 "trial_num": req.body.trial_num,
                 "video_num": req.body.video_num,
 		 "video": req.body.video,
