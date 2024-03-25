@@ -325,9 +325,10 @@
         }
 		 });
 
+      console.log('data', video_data);
       videos = video_data["videos"]
       let classes = video_data["classes"];
-      console.log(classes);
+      console.log('classes', classes);
 		 
 
       let order_num = 0;
@@ -335,7 +336,7 @@
         dataType: "json",
         type: 'POST',
         url: "/get_order_num",
-        data: {"link_id": link, "assignment_id": assignment_id},
+        data: {"link": link, "assignment_id": assignment_id},
         async: false,
         success: function(data) {
           order_num = data[0];

@@ -53,7 +53,7 @@ app.post('/submit_response', function (req, res) {
     /*
       Records a workers response along with some additional information.
     */
-    let data = {"link_id": req.body.link_id,
+    let data = {"link_id": req.body.link,
                 "trial_num": req.body.trial_num,
                 "video_num": req.body.video_num,
 		 "video": req.body.video,
@@ -184,8 +184,9 @@ app.post('/get_order_num', async function (req, res) {
        list) % (number of video lists).
     */
     let order_num = 0
-    let assignment_ids = await redisClient.lrangeAsync("assignment_ids:" + req.body.link_id, 0, -1);
+    let assignment_ids = await redisClient.lrangeAsync("assignment_ids:" + req.body.link, 0, -1);
     let found = false;
+    let link = req.body.link;
     // If the assignment ID is newly accepted, then assign it a
     // new video list associated with this link by iterating through the
     // video list numbers and assigning it the next available
@@ -204,7 +205,9 @@ app.post('/get_order_num', async function (req, res) {
 		let current_time = new Date().getTime();
 		let elapsed_time = current_time - start_time
 
-		let link_order_dir = await redisClient.hgetallAsync(link)['order']
+		let link_order_dir = await redisClient.hgetallAsync(req.body.link)
+		link_order_dir = link_order_dir['order']
+
 		const video_list = require('../public/experiment_data/video_orders/' + link_order_dir + '/' + i + '.json')
 		let NUM_IMAGES_PER_TASK = video_list.length;
 
@@ -215,7 +218,7 @@ app.post('/get_order_num', async function (req, res) {
 
 	    // If an assignment is marked for replacement, assign its video list to this assignment
 	    if (bad_assignment && ! found) {
-		redisClient.lsetAsync("assignment_ids:" + req.body.link_id, i, req.body.assignment_id);
+		redisClient.lsetAsync("assignment_ids:" + req.body.link, i, req.body.assignment_id);
 		order_num = i
 		found = true;
 
@@ -224,7 +227,7 @@ app.post('/get_order_num', async function (req, res) {
 	// If no replacements are found, the assignment is appended to the
 	// list and ther order number is the list length modulo number of video lists
 	if (! found) {
-	    redisClient.rpushAsync("assignment_ids:" + req.body.link_id, req.body.assignment_id);
+	    redisClient.rpushAsync("assignment_ids:" + req.body.link, req.body.assignment_id);
 	    order_num = assignment_ids.length % NUM_VIDEO_LISTS_PER_LINK; // TODO add modulo number of videos
 	    assignment_ids.push(req.body.assignment_id);
 	}
